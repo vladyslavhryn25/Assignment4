@@ -10,6 +10,7 @@ class CommandLineInterface {
     void addChecklistItem();
     void printAll();
     void removeLine();
+    void toggleChecklist();
     void saveEncrypted();
     void loadDecrypted();
 
