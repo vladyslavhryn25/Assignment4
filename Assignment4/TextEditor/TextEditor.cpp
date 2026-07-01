@@ -1,20 +1,38 @@
-﻿// TextEditor.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
+﻿#include "Line.h"
+#include "TextLine.h"
+#include "ContactLine.h"
+#include "ChecklistLine.h"
 #include <iostream>
+#include <vector>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+int main() {
+    std::vector<Line*> doc;
+    doc.push_back(new TextLine("My student notes"));
+    doc.push_back(new ChecklistLine("Prepare agenda", true));
+    doc.push_back(new ChecklistLine("Send invitations", false));
+    doc.push_back(new ContactLine("Vladyslav", "Hryn", "vladyslav.hryn.25@kse.org.ua"));
+
+    std::cout << "Print" << std::endl;
+    for (size_t i = 0; i < doc.size(); i++)
+        doc[i]->print();
+
+    std::cout << "\nSerialize" << std::endl;
+    std::vector<std::string> saved;
+    for (size_t i = 0; i < doc.size(); i++) {
+        std::string s = doc[i]->serialize();
+        saved.push_back(s);
+        std::cout << s << std::endl;
+    }
+
+    std::cout << "\nDeserialize back" << std::endl;
+    for (size_t i = 0; i < saved.size(); i++) {
+        Line* l = Line::deserialize(saved[i]);
+        l->print();
+        delete l;
+    }
+
+    for (size_t i = 0; i < doc.size(); i++)
+        delete doc[i];
+
+    return 0;
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
