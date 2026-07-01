@@ -1,38 +1,33 @@
-﻿#include "Line.h"
+﻿#include "Text.h"
 #include "TextLine.h"
 #include "ContactLine.h"
 #include "ChecklistLine.h"
 #include <iostream>
-#include <vector>
 
 int main() {
-    std::vector<Line*> doc;
-    doc.push_back(new TextLine("My student notes"));
-    doc.push_back(new ChecklistLine("Prepare agenda", true));
-    doc.push_back(new ChecklistLine("Send invitations", false));
-    doc.push_back(new ContactLine("Vladyslav", "Hryn", "vladyslav.hryn.25@kse.org.ua"));
+    Text doc;
+    doc.addLine(new TextLine("My student notes"));
+    doc.addLine(new ChecklistLine("Make assignment 4", true));
+    doc.addLine(new ChecklistLine("Be happy", false));
+    doc.addLine(new ContactLine("Vladyslav", "Hryn", "vladyslav.hryn.25@kse.org.ua"));
 
-    std::cout << "Print" << std::endl;
-    for (size_t i = 0; i < doc.size(); i++)
-        doc[i]->print();
+    std::cout << "All lines" << std::endl;
+    doc.printAll();
 
-    std::cout << "\nSerialize" << std::endl;
-    std::vector<std::string> saved;
-    for (size_t i = 0; i < doc.size(); i++) {
-        std::string s = doc[i]->serialize();
-        saved.push_back(s);
-        std::cout << s << std::endl;
-    }
+    std::cout << "\nTotal lines: " << doc.size() << std::endl;
 
-    std::cout << "\nDeserialize back" << std::endl;
-    for (size_t i = 0; i < saved.size(); i++) {
-        Line* l = Line::deserialize(saved[i]);
-        l->print();
-        delete l;
-    }
+    std::cout << "\nInsert in 1 position" << std::endl;
+    doc.insertLine(1, new TextLine("Inserted line"));
+    doc.printAll();
 
-    for (size_t i = 0; i < doc.size(); i++)
-        delete doc[i];
+    std::cout << "\nRemove line 0" << std::endl;
+    doc.removeLine(0);
+    doc.printAll();
+
+    std::cout << "\nSerealize all" << std::endl;
+    std::vector<std::string> data = doc.serializeAll();
+    for (size_t i = 0; i < data.size(); i++)
+        std::cout << data[i] << std::endl;
 
     return 0;
 }
