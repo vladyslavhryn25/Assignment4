@@ -3,6 +3,7 @@
 #include "ContactLine.h"
 #include "ChecklistLine.h"
 #include <iostream>
+#include "Cipher.h"
 
 int main() {
     Text doc;
@@ -29,5 +30,18 @@ int main() {
     for (size_t i = 0; i < data.size(); i++)
         std::cout << data[i] << std::endl;
 
+    std::cout << "\n=== CIPHER TEST ===" << std::endl;
+    Cipher cipher("CipherLib.dll");
+    if (cipher.isLoaded()) {
+        std::cout << "DLL loaded OK" << std::endl;
+        std::string enc = cipher.caesarEncrypt("Welcome to the meeting", 3);
+        std::cout << "Encrypted: " << enc << std::endl;
+        std::cout << "Decrypted: " << cipher.caesarDecrypt(enc, 3) << std::endl;
+    }
+    else {
+        std::cout << "DLL NOT loaded!" << std::endl;
+    }
+
     return 0;
+
 }
